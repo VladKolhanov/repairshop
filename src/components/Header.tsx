@@ -3,6 +3,7 @@ import Link from "next/link";
 import { FileIcon, HomeIcon, UsersRoundIcon } from "@/icons";
 import { NavButton } from "@/components/NavButton";
 import { Networking } from "@/config/networking";
+import { ModeToggle } from "@/components/ModeToggle";
 
 export function Header() {
   return (
@@ -32,6 +33,7 @@ export function Header() {
             label="Customers"
             icon={UsersRoundIcon}
           />
+          <ModeToggle />
         </div>
       </div>
     </header>

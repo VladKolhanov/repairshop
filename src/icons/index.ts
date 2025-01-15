@@ -1,1 +1,7 @@
-export { HomeIcon, FileIcon, UsersRoundIcon } from "lucide-react";
+export {
+  HomeIcon,
+  FileIcon,
+  UsersRoundIcon,
+  MoonIcon,
+  SunIcon,
+} from "lucide-react";
