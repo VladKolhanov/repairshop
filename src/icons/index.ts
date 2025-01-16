@@ -4,4 +4,5 @@ export {
   UsersRoundIcon,
   MoonIcon,
   SunIcon,
+  LogOutIcon,
 } from "lucide-react";

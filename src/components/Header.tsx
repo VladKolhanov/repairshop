@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 
-import { FileIcon, HomeIcon, UsersRoundIcon } from "@/icons";
+import { Button } from "@/components/ui/button";
+import { FileIcon, HomeIcon, UsersRoundIcon, LogOutIcon } from "@/icons";
 import { NavButton } from "@/components/NavButton";
 import { Networking } from "@/config/networking";
 import { ModeToggle } from "@/components/ModeToggle";
@@ -34,6 +36,19 @@ export function Header() {
             icon={UsersRoundIcon}
           />
           <ModeToggle />
+
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label="LogOut"
+            title="LogOut"
+            className="rounded-full"
+            asChild
+          >
+            <LogoutLink>
+              <LogOutIcon />
+            </LogoutLink>
+          </Button>
         </div>
       </div>
     </header>
