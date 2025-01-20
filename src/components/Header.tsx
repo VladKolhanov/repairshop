@@ -4,7 +4,7 @@ import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { Button } from "@/components/ui/button";
 import { FileIcon, HomeIcon, UsersRoundIcon, LogOutIcon } from "@/icons";
 import { NavButton } from "@/components/NavButton";
-import { Networking } from "@/config/networking";
+import { Networking } from "@/configs/networking";
 import { ModeToggle } from "@/components/ModeToggle";
 
 export function Header() {
