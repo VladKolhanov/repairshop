@@ -4,6 +4,8 @@ import { getCustomer } from "@/services/customers";
 import { PageProps } from "@/types/app";
 import { BackButton } from "@/components/BackButton";
 
+import CustomerForm from "./_components/CustomerForm";
+
 type Props = PageProps<
   undefined,
   {
@@ -28,10 +30,10 @@ export default async function CustomerFormPage({ searchParams }: Props) {
           </>
         );
       }
-      console.log(customer);
-      // put customer component
+
+      return <CustomerForm customer={customer} />;
     } else {
-      // new customer form component
+      return <CustomerForm />;
     }
   } catch (error) {
     if (error instanceof Error) {
