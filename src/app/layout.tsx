@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   },
   description: "Dan`s Computer Repair Shop",
   applicationName: "Repair Shop",
-  icons: "/favicon/favicon.ico",
+  icons: "/favicon/icon.png",
 };
 
 export default function RootLayout({ children }: LayoutProps) {
