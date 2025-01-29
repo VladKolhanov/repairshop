@@ -15,12 +15,14 @@ type Props<TSchema> = {
   fieldTitle: string;
   nameInSchema: keyof TSchema & string;
   message: string;
+  disabled?: boolean;
 };
 
 export const CheckboxWithLabel = <TSchema,>({
   fieldTitle,
   nameInSchema,
   message,
+  disabled = false,
 }: Props<TSchema>) => {
   const form = useFormContext();
 
@@ -40,6 +42,7 @@ export const CheckboxWithLabel = <TSchema,>({
                 id={nameInSchema}
                 onCheckedChange={field.onChange}
                 checked={field.value}
+                disabled={disabled}
                 {...field}
               />
             </FormControl>
