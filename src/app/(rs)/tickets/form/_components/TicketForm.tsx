@@ -2,6 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAction } from "next-safe-action/hooks";
 
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
@@ -16,6 +17,10 @@ import {
   type SelectTicketSchemaType,
 } from "@/zod-schemas/ticket";
 import { type SelectCustomerSchemaType } from "@/zod-schemas/customer";
+import { saveTicketAction } from "@/app/actions/tickets";
+import { useToast } from "@/hooks/use-toast";
+import { LoaderCircleIcon } from "@/icons";
+import { DisplayServerActionResponse } from "@/components/DisplayServerActionResponse";
 
 type Props = {
   customer: SelectCustomerSchemaType;
@@ -35,6 +40,8 @@ export default function TicketForm({
 }: Props) {
   const isManager = Array.isArray(techs);
 
+  const { toast } = useToast();
+
   const defaultValues: InsertTicketSchemaType = {
     id: ticket?.id ?? "(New)",
     customerId: ticket?.customerId ?? customer.id,
@@ -50,12 +57,35 @@ export default function TicketForm({
     defaultValues,
   });
 
+  const {
+    execute: executeSave,
+    result: saveResult,
+    isExecuting: isSaving,
+    reset: resetSaveAction,
+  } = useAction(saveTicketAction, {
+    onSuccess({ data }) {
+      toast({
+        variant: "default",
+        title: "Success!",
+        description: data?.message,
+      });
+    },
+    onError({ error }) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Save Failed",
+      });
+    },
+  });
+
   async function submitForm(data: InsertTicketSchemaType) {
-    console.log(data);
+    executeSave(data);
   }
 
   return (
     <div className="flex flex-col gap-1 sm:px-8">
+      <DisplayServerActionResponse result={saveResult} />
       <div>
         <h2 className="text-2xl font-bold">
           {ticket?.id && isEditable
@@ -139,15 +169,25 @@ export default function TicketForm({
                   className="w-3/4"
                   variant="default"
                   title="Save"
+                  disabled={isSaving}
                 >
-                  Save
+                  {isSaving ? (
+                    <>
+                      <LoaderCircleIcon className="animate-spin" /> Saving
+                    </>
+                  ) : (
+                    "Save"
+                  )}
                 </Button>
 
                 <Button
                   type="button"
                   variant="destructive"
                   title="Reset"
-                  onClick={() => form.reset(defaultValues)}
+                  onClick={() => {
+                    form.reset(defaultValues);
+                    resetSaveAction();
+                  }}
                 >
                   Reset
                 </Button>

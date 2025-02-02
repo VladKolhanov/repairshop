@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { geistMono, geistSans } from "@/fonts";
 import { LayoutProps } from "@/types/app";
 import { ThemeProvider } from "@/providers/ThemeProvider";
+import { Toaster } from "@/components/ui/toaster";
 import "@/styles/globals.css";
 
 export const metadata: Metadata = {
@@ -28,6 +29,7 @@ export default function RootLayout({ children }: LayoutProps) {
           disableTransitionOnChange
         >
           {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
