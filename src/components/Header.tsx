@@ -6,6 +6,7 @@ import { FileIcon, HomeIcon, UsersRoundIcon, LogOutIcon } from "@/icons";
 import { NavButton } from "@/components/NavButton";
 import { Networking } from "@/configs/networking";
 import { ModeToggle } from "@/components/ModeToggle";
+import { NavButtonMenu } from "@/components/NavButtonMenu";
 
 export function Header() {
   return (
@@ -30,11 +31,16 @@ export function Header() {
             label="Tickets"
             icon={FileIcon}
           />
-          <NavButton
-            href={Networking.CUSTOMERS}
-            label="Customers"
+
+          <NavButtonMenu
             icon={UsersRoundIcon}
+            label="Customers Menu"
+            choices={[
+              { title: "Search Customers", href: Networking.CUSTOMERS },
+              { title: "New Customer", href: Networking.CUSTOMERS_FORM },
+            ]}
           />
+
           <ModeToggle />
 
           <Button

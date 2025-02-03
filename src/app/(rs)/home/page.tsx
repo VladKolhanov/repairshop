@@ -1,7 +1,7 @@
-export const metadata = {
-  title: "Home",
-};
+import { redirect } from "next/navigation";
+
+import { Networking } from "@/configs/networking";
 
 export default function Home() {
-  return <h2>Home Page</h2>;
+  redirect(Networking.TICKETS);
 }
