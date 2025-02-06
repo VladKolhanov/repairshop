@@ -10,6 +10,7 @@ import { InputWithLabel } from "@/components/inputs/InputWithLabel";
 import { TextAreaWithLabel } from "@/components/inputs/TextAreaWithLabel";
 import { SelectWithLabel } from "@/components/inputs/SelectWithLabel";
 import { CheckboxWithLabel } from "@/components/inputs/CheckboxWithLabel";
+import { DisplayServerActionResponse } from "@/components/DisplayServerActionResponse";
 import {
   insertTicketSchema,
   selectTicketSchema,
@@ -20,7 +21,6 @@ import { type SelectCustomerSchemaType } from "@/zod-schemas/customer";
 import { saveTicketAction } from "@/app/actions/tickets";
 import { useToast } from "@/hooks/use-toast";
 import { LoaderCircleIcon } from "@/icons";
-import { DisplayServerActionResponse } from "@/components/DisplayServerActionResponse";
 
 type Props = {
   customer: SelectCustomerSchemaType;

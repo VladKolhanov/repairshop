@@ -3,6 +3,7 @@ import { PageProps } from "@/types/app";
 import { getOpenTickets, getTicketSearch } from "@/services/tickets";
 
 import { TicketSearch } from "./_components/TicketSearch";
+import { TicketTable } from "./_components/TicketTable";
 
 type Props = PageProps<undefined, { searchText: string }>;
 
@@ -19,7 +20,11 @@ export default async function Tickets({ searchParams }: Props) {
     return (
       <>
         <TicketSearch />
-        <p>{JSON.stringify(results)}</p>
+        {results.length ? (
+          <TicketTable data={results} />
+        ) : (
+          <p className="mt-4">No open tickets found</p>
+        )}
       </>
     );
   }
@@ -29,7 +34,11 @@ export default async function Tickets({ searchParams }: Props) {
   return (
     <>
       <TicketSearch />
-      <p>{JSON.stringify(results)}</p>
+      {results.length ? (
+        <TicketTable data={results} />
+      ) : (
+        <p className="mt-4">No results found</p>
+      )}
     </>
   );
 }
