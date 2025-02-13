@@ -10,5 +10,7 @@ export {
   CircleXIcon,
   ArrowUpDownIcon,
   ArrowDownIcon,
+  MoreHorizontalIcon,
+  TableOfContentsIcon,
   ArrowUpIcon,
 } from "lucide-react";

@@ -5,8 +5,10 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
+  CellContext,
 } from "@tanstack/react-table";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { MoreHorizontalIcon, TableOfContentsIcon } from "lucide-react";
 
 import {
   Table,
@@ -16,15 +18,23 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 import type { SelectCustomerSchemaType } from "@/zod-schemas/customer";
+import { Networking } from "@/configs/networking";
 
 type Props = {
   data: SelectCustomerSchemaType[];
 };
 
 export const CustomerTable = ({ data }: Props) => {
-  const router = useRouter();
-
   const columnHeadersArray: Array<keyof SelectCustomerSchemaType> = [
     "firstName",
     "lastName",
@@ -36,12 +46,58 @@ export const CustomerTable = ({ data }: Props) => {
 
   const columnHelper = createColumnHelper<SelectCustomerSchemaType>();
 
-  const columns = columnHeadersArray.map((columnName) => {
-    return columnHelper.accessor(columnName, {
-      id: columnName,
-      header: columnName[0].toUpperCase() + columnName.slice(1),
-    });
-  });
+  const ActionsCell = ({
+    row,
+  }: CellContext<SelectCustomerSchemaType, unknown>) => {
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="h-8 w-8 p-0">
+            <span className="sr-only">Open Menu</span>
+            <MoreHorizontalIcon className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>
+            <Link
+              href={`${Networking.TICKETS_FORM}?customerId=${row.original.id}`}
+              className="w-full"
+              prefetch={false}
+            >
+              New Ticket
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link
+              href={`${Networking.CUSTOMERS_FORM}?customerId=${row.original.id}`}
+              className="w-full"
+              prefetch={false}
+            >
+              Edit Customer
+            </Link>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
+  };
+
+  ActionsCell.displayName = "ActionsCell";
+
+  const columns = [
+    columnHelper.display({
+      id: "actions",
+      header: () => <TableOfContentsIcon />,
+      cell: ActionsCell,
+    }),
+    ...columnHeadersArray.map((columnName) => {
+      return columnHelper.accessor(columnName, {
+        id: columnName,
+        header: columnName[0].toUpperCase() + columnName.slice(1),
+      });
+    }),
+  ];
 
   const table = useReactTable({
     data,
@@ -56,13 +112,26 @@ export const CustomerTable = ({ data }: Props) => {
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <TableHead key={header.id} className="bg-secondary">
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
+                <TableHead
+                  key={header.id}
+                  className={`bg-secondary ${
+                    header.id === "actions" ? "w-12" : ""
+                  }`}
+                >
+                  <div
+                    className={`${
+                      header.id === "action"
+                        ? "flex justify-center items-center"
+                        : ""
+                    }`}
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </div>
                 </TableHead>
               ))}
             </TableRow>
@@ -73,9 +142,6 @@ export const CustomerTable = ({ data }: Props) => {
             <TableRow
               key={row.id}
               className="cursor-pointer hover:bg-border/25 dark:hover:bg-ring/40"
-              onClick={() =>
-                router.push(`/customers/form?customerId=${row.original.id}`)
-              }
             >
               {row.getVisibleCells().map((cell) => (
                 <TableCell key={cell.id} className="border">

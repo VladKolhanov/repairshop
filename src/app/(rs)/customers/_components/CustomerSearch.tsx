@@ -12,6 +12,7 @@ export const CustomerSearch = () => {
         type="text"
         placeholder="Search Customers"
         className="w-full"
+        autoFocus
       />
       <SearchButton />
     </Form>

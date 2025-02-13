@@ -1,4 +1,5 @@
 import * as Sentry from "@sentry/nextjs";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 import { getCustomer } from "@/services/customers";
 import { PageProps } from "@/types/app";
@@ -25,6 +26,10 @@ export default async function CustomerFormPage({ searchParams }: Props) {
   const { customerId } = await searchParams;
 
   try {
+    const { getPermission } = getKindeServerSession();
+    const managerPermission = await getPermission("manager");
+    const isManager = managerPermission?.isGranted;
+
     if (customerId) {
       const customer = await getCustomer(parseInt(customerId));
 
@@ -39,9 +44,15 @@ export default async function CustomerFormPage({ searchParams }: Props) {
         );
       }
 
-      return <CustomerForm customer={customer} />;
+      return (
+        <CustomerForm
+          key={customerId}
+          isManager={isManager}
+          customer={customer}
+        />
+      );
     } else {
-      return <CustomerForm />;
+      return <CustomerForm key="new" isManager={isManager} />;
     }
   } catch (error) {
     if (error instanceof Error) {

@@ -1,7 +1,5 @@
-import { redirect } from "next/navigation";
-
-import { Networking } from "@/configs/networking";
+import Loading from "@/app/loading";
 
 export default function Home() {
-  redirect(Networking.TICKETS);
+  return <Loading />;
 }

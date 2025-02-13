@@ -1,4 +1,7 @@
 import Image from "next/image";
+import Link from "next/link";
+
+import { Networking } from "@/configs/networking";
 
 export const metadata = {
   title: "Page Not Found",
@@ -20,6 +23,9 @@ export default function NotFound() {
           title="Page Not Found"
         />
       </div>
+      <Link href={Networking.TICKETS} className="text-center hover:underline">
+        <h3>Go Home</h3>
+      </Link>
     </div>
   );
 }

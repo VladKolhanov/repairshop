@@ -30,6 +30,7 @@ type Props = {
     description: string;
   }[];
   isEditable?: boolean;
+  isManager?: boolean | undefined;
 };
 
 export default function TicketForm({
@@ -37,9 +38,8 @@ export default function TicketForm({
   ticket,
   techs,
   isEditable = false,
+  isManager = false,
 }: Props) {
-  const isManager = Array.isArray(techs);
-
   const { toast } = useToast();
 
   const defaultValues: InsertTicketSchemaType = {
@@ -48,7 +48,7 @@ export default function TicketForm({
     title: ticket?.title ?? "",
     description: ticket?.description ?? "",
     completed: ticket?.completed ?? false,
-    tech: ticket?.tech ?? "new-ticket@example.com",
+    tech: ticket?.tech.toLowerCase() ?? "new-ticket@example.com",
   };
 
   const form = useForm<InsertTicketSchemaType>({
@@ -108,7 +108,7 @@ export default function TicketForm({
               disabled={!isEditable}
             />
 
-            {isManager ? (
+            {isManager && techs ? (
               <SelectWithLabel<InsertTicketSchemaType>
                 fieldTitle="Tech ID"
                 nameInSchema="tech"
